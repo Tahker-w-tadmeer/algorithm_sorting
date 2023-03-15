@@ -2,26 +2,21 @@ import random
 
 
 def partition(arr, low, high):
-    pivot = low
+    pivot_index = random.randint(low, high)
+    arr[pivot_index], arr[low] = arr[low], arr[pivot_index]
+    pivot = arr[low]
     i = low + 1
     for j in range(low + 1, high + 1):
-        if arr[j] <= arr[pivot]:
+        if arr[j] <= pivot:
             arr[i], arr[j] = arr[j], arr[i]
             i = i + 1
-    arr[pivot], arr[i - 1] = arr[i - 1], arr[pivot]
-    pivot = i - 1
-    return pivot
-
-
-def random_partition(arr, low, high):
-    random_pivot = random.randrange(low, high)
-    arr[low], arr[random_pivot] = arr[random_pivot], arr[low]
-    return partition(arr, low, high)
+    arr[low], arr[i - 1] = arr[i - 1], arr[low]
+    return i - 1
 
 
 def quick_sort(arr, low, high):
     if high > low:
-        pivot = random_partition(arr, low, high)
+        pivot = partition(arr, low, high)
         quick_sort(arr, low, pivot - 1)
         quick_sort(arr, pivot + 1, high)
 
