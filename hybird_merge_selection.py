@@ -14,7 +14,7 @@ def selection_sort(array, start, end):
 
 def hybird_merge_selection(array, start, thershold, end):
     size = end - start
-    if (thershold < size and thershold > 0):
+    if thershold < size and thershold > 0:
         mid = (start + end) // 2
         hybird_merge_selection(array, start, thershold, mid)
         hybird_merge_selection(array, mid + 1, thershold, end)

@@ -25,8 +25,3 @@ def heap_sort(arr):
         arr[i], arr[0] = arr[0], arr[i]
         max_heapify(arr, i, 0)
 
-
-arr = [1, 10, 20, 400, 2]
-heap_sort(arr)
-# arr.reverse()
-print(arr)
