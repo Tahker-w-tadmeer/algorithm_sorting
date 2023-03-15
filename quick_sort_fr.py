@@ -21,7 +21,5 @@ def quick_sort(arr, low, high):
         quick_sort(arr, pivot + 1, high)
 
 
-for z in range(10):
-    x = [8, 2, 4, 7, 1, 3, 9, 6, 5]
-    quick_sort(x, 0, len(x) - 1)
-    print(x)
+def sort(arr):
+    quick_sort(arr, 0, len(arr)-1)
