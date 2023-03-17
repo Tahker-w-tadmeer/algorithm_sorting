@@ -1,12 +1,15 @@
-import random
-import time
 
-import Insertion_Sort
 import Merge_Sort
-import heap_sort
-import hybird_merge_selection
 import quick_sort_fr
+import heap_sort
+import time
+import random
+import Insertion_Sort
+import hybird_merge_selection
 import selection_sort
+import matplotlib.pyplot as plt
+import threading
+
 
 array10m = range(10_000_000)
 
@@ -24,49 +27,61 @@ arrays = [
     array50k,
     array100k,
     array250k,
-    array500k,
-    array1m,
 ]
 
-m = 1_000_000
-for i in range(len(arrays)):
-    print("Array " + str(i + 1))
+xMerge = []
+yMerge = []
+
+xQuick = []
+yQuick = []
+
+xInsertion = []
+yInsertion = []
+
+xSelection = []
+ySelection = []
+
+xHybrid = []
+yHybrid = []
+
+xHeap = []
+yHeap = []
 
 
-    array = arrays[i].copy()
-    start_time = time.time()
-    quick_sort_fr.sort(array)
-    end_time = time.time()
-    print("Quick Sort: " + str((end_time - start_time) * m) + "µs")
+def add_data(algorithm, points):
+    for i in range(len(arrays)):
+        arr = arrays[i].copy()
+        m = 1_000
+        start = time.time()
+        algorithm.sort(arr)
+        end = time.time()
+        points[1].append((end - start) * m)
+        points[0].append(len(arr))
 
-    array = arrays[i].copy()
-    start_time = time.time()
-    heap_sort.heap_sort(array)
-    end_time = time.time()
-    print("Heap Sort: " + str((end_time - start_time) * m) + "µs")
 
-    array = arrays[i].copy()
-    start_time = time.time()
-    Insertion_Sort.InsertionSort(array)
-    end_time = time.time()
-    print("Insertion Sort: " + str((end_time-start_time) * m) + "µs")
+mergeThread = threading.Thread(target=add_data, args=(Merge_Sort, [xMerge, yMerge]))
+mergeThread.start()
+heapThread = threading.Thread(target=add_data, args=(heap_sort, [xHeap, yHeap]))
+heapThread.start()
+quickThread = threading.Thread(target=add_data, args=(quick_sort_fr, [xQuick, yQuick]))
+quickThread.start()
+hybridThread = threading.Thread(target=add_data, args=(hybird_merge_selection, [xHybrid, yHybrid]))
+hybridThread.start()
+selectionThread = threading.Thread(target=add_data, args=(selection_sort, [xSelection, ySelection]))
+selectionThread.start()
+insertionThread = threading.Thread(target=add_data, args=(Insertion_Sort, [xInsertion, yInsertion]))
+insertionThread.start()
 
-    array = arrays[i].copy()
-    start_time = time.time()
-    Merge_Sort.mergesort(array,0,len(array)-1)
-    end_time = time.time()
-    print("merge sort: " + str((end_time-start_time) * m) + "µs")
+plt.plot(xMerge, yMerge, label="Merge", markersize=8, marker='o')
+plt.plot(xQuick, yQuick, label="Quick", markersize=8, marker='o')
+plt.plot(xHeap, yHeap, label="Heap", markersize=8, marker='o')
+plt.plot(xHybrid, yHybrid, label="Hybrid", markersize=8, marker='o')
+plt.plot(xSelection, ySelection, label="Selection", markersize=8, marker='o')
+plt.plot(xInsertion, yInsertion, label="Insertion", markersize=8, marker='o')
 
-    array = arrays[i].copy()
-    start_time = time.time()
-    selection_sort.selection_sort(array)
-    end_time = time.time()
-    print("selection Sort: " + str((end_time - start_time) * m) + "µs")
+plt.xlabel('Input Size (N)')
+plt.ylabel('Execution time (ms)')
+plt.title("Line graph")
+plt.legend()
+plt.show()
 
-    array = arrays[i].copy()
-    start_time = time.time()
-    hybird_merge_selection.hybird_merge_selection(array,0,6,len(array)-1)
-    end_time = time.time()
-    print("Hybird merge: " + str((end_time - start_time) * m) + "µs")
-
-    print()
