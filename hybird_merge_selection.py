@@ -1,3 +1,6 @@
+import Merge_Sort
+
+
 def selection_sort(array, start, end):
     index = start
     for i in range(start, end + 1):
@@ -18,6 +21,7 @@ def hybird_merge_selection(array, start, thershold, end):
         mid = (start + end) // 2
         hybird_merge_selection(array, start, thershold, mid)
         hybird_merge_selection(array, mid + 1, thershold, end)
+        Merge_Sort.merge(array, start, mid, end)
 
     selection_sort(array, start, end)
 
